@@ -1,0 +1,12 @@
+# sudo:required says hey travis we need super user level permissions
+sudo:required
+# make sure that Travis CI understands that we need docker cli  preinstaled
+#Travis ci is gonna automatically install a  copy of docker into our little ry=unning contaner.
+
+services:
+  - docker
+
+# this cmd gonna  executed before test run  or deploy our project
+##Build our image using Dockerfil.dev
+beforte_install:
+  - docker build -t monia/docker-react -f Dockerfile.dev .
