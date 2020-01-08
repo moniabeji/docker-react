@@ -1,0 +1,26 @@
+version: '3'
+services:
+  # we can call react_app or web ..
+  web:
+    # assume we have a Dockerfile in the work directory.
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      # . the current work directory
+      # we want to mapp that folder outside the containe (.) into  into the app folder inside the container /app
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm","run","test"]
+
+
+
