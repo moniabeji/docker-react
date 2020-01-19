@@ -10,3 +10,27 @@ services:
 ##Build our image using Dockerfil.dev
 beforte_install:
   - docker build -t monia/docker-react -f Dockerfile.dev .
+
+#Tell travis how to run our test suite
+script:
+  - docker run monia/docker-react npm run test -- --coverage
+
+# Travis config for deployment
+deploy:
+  # fix for missing bucket_name errot
+  # we will be adding our AWS variables to the deploy script 
+  edge: true
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "docker"
+  env: "Docker-env"
+  bucket_name: "elasticbeanstalk-us-west-2-306476627547"
+  bucket_path: "docker"
+  # we will be adding our AWS variables to the deploy script 
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: 
+    secure: $AWS_SECRET_KEY
+  # depoy the app when the master gets some new code
+  # means any time we push code to branch master that's the time to deploy
+  on:
+    brach: master
